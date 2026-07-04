@@ -1,0 +1,16 @@
+{
+  "name": "Image Compressor PWA",
+  "short_name": "Compressor",
+  "description": "Scale and compress your images easily in the browser.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#1A1A2E",
+  "theme_color": "#16213E",
+  "icons": [
+    {
+      "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iIzE2MjEzRSIvPjx0ZXh0IHk9IjYwIiBmb250LXNpemU9IjUwIj7wn4+3PC90ZXh0Pjwvc3ZnPg==",
+      "sizes": "512x512",
+      "type": "image/svg+xml"
+    }
+  ]
+}

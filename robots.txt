@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://maadilfaisal.github.io/ImageCompressorPWA/sitemap.xml
