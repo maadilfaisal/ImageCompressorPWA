@@ -176,7 +176,7 @@ input[type="file"] { display: none; }
     text-transform: uppercase;
     font-weight: 600;
 }
-.setting-row input {
+.setting-row input, .setting-row select {
     background: #0F3460;
     border: 1px solid #2A2A4A;
     color: #fff;
@@ -185,7 +185,7 @@ input[type="file"] { display: none; }
     font-size: 14px;
     width: 100%;
 }
-.setting-row input:focus { outline: none; border-color: #E94560; }
+.setting-row input:focus, .setting-row select:focus { outline: none; border-color: #E94560; }
 
 .summary {
     background: #0F3460;
@@ -208,6 +208,14 @@ input[type="file"] { display: none; }
 </div>
 
 <div class="settings-panel">
+    <div class="setting-row">
+        <label>Format</label>
+        <select id="inputFormat">
+            <option value="image/jpeg" selected>JPEG</option>
+            <option value="image/png">PNG</option>
+            <option value="image/webp">WEBP</option>
+        </select>
+    </div>
     <div class="setting-row">
         <label>Width</label>
         <input type="number" id="inputW" value="600" min="10">
@@ -262,12 +270,14 @@ let TARGET_W = 600;
 let TARGET_H = 800;
 let TARGET_KB = 20;
 let TARGET_BYTES = TARGET_KB * 1024;
+let TARGET_FORMAT = 'image/jpeg';
 
 function updateSettings() {
     TARGET_W = parseInt(document.getElementById('inputW').value) || 600;
     TARGET_H = parseInt(document.getElementById('inputH').value) || 800;
     TARGET_KB = parseInt(document.getElementById('inputKB').value) || 20;
     TARGET_BYTES = TARGET_KB * 1024;
+    TARGET_FORMAT = document.getElementById('inputFormat').value || 'image/jpeg';
 }
 
 let images = [];
@@ -523,7 +533,7 @@ async function iterativeCompress(canvas, targetBytes) {
 
 function canvasToBlob(canvas, quality) {
     return new Promise(function(resolve) {
-        canvas.toBlob(function(blob) { resolve(blob); }, 'image/jpeg', quality);
+        canvas.toBlob(function(blob) { resolve(blob); }, TARGET_FORMAT, quality);
     });
 }
 
@@ -537,10 +547,13 @@ function downloadAll() {
             var a = document.createElement('a');
             var name = item.name;
             var dot = name.lastIndexOf('.');
+            var ext = TARGET_FORMAT.split('/')[1];
+            if (ext === 'jpeg') ext = 'jpg';
+            
             if (dot > 0) {
-                name = name.substring(0, dot) + '_compressed.jpg';
+                name = name.substring(0, dot) + '_compressed.' + ext;
             } else {
-                name = name + '_compressed.jpg';
+                name = name + '_compressed.' + ext;
             }
             a.href = url;
             a.download = name;
