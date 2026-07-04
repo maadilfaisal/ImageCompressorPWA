@@ -422,13 +422,10 @@ function compressImage(file) {
                 var targetRatio = TARGET_W / TARGET_H;
                 var sourceX = 0, sourceY = 0, sourceW = img.width, sourceH = img.height;
 
-                // Center crop to maintain aspect ratio
                 if (sourceRatio > targetRatio) {
-                    // Source is wider, crop horizontally
                     sourceW = img.height * targetRatio;
                     sourceX = (img.width - sourceW) / 2;
                 } else {
-                    // Source is taller, crop vertically
                     sourceH = img.width / targetRatio;
                     sourceY = (img.height - sourceH) / 2;
                 }
@@ -502,7 +499,6 @@ async function iterativeCompress(canvas, targetBytes) {
                 if (Math.abs(high - low) < 0.005) break;
             }
 
-            // Scale back up to 600x800
             var finalCanvas = document.createElement('canvas');
             finalCanvas.width = TARGET_W;
             finalCanvas.height = TARGET_H;
