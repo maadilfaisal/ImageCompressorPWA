@@ -156,6 +156,37 @@ body {
 .btn:disabled { opacity: 0.5; cursor: not-allowed; }
 input[type="file"] { display: none; }
 
+.settings-panel {
+    background: #16213E;
+    padding: 12px 20px;
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    border-bottom: 1px solid #2A2A4A;
+}
+.setting-row {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+.setting-row label {
+    font-size: 11px;
+    color: #8899AA;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+.setting-row input {
+    background: #0F3460;
+    border: 1px solid #2A2A4A;
+    color: #fff;
+    padding: 8px;
+    border-radius: 6px;
+    font-size: 14px;
+    width: 100%;
+}
+.setting-row input:focus { outline: none; border-color: #E94560; }
+
 .summary {
     background: #0F3460;
     border-radius: 12px;
@@ -173,7 +204,22 @@ input[type="file"] { display: none; }
 
 <div class="header">
     <h1>&#x1F4F7; Image Compressor</h1>
-    <p>Scale to 600&times;800 &bull; Compress to 20KB</p>
+    <p>Scale and Compress Images Natively</p>
+</div>
+
+<div class="settings-panel">
+    <div class="setting-row">
+        <label>Width</label>
+        <input type="number" id="inputW" value="600" min="10">
+    </div>
+    <div class="setting-row">
+        <label>Height</label>
+        <input type="number" id="inputH" value="800" min="10">
+    </div>
+    <div class="setting-row">
+        <label>Max KB</label>
+        <input type="number" id="inputKB" value="20" min="1">
+    </div>
 </div>
 
 <div class="status-bar" id="statusBar">
@@ -212,10 +258,17 @@ input[type="file"] { display: none; }
 </div>
 
 <script>
-const TARGET_W = 600;
-const TARGET_H = 800;
-const TARGET_KB = 20;
-const TARGET_BYTES = TARGET_KB * 1024;
+let TARGET_W = 600;
+let TARGET_H = 800;
+let TARGET_KB = 20;
+let TARGET_BYTES = TARGET_KB * 1024;
+
+function updateSettings() {
+    TARGET_W = parseInt(document.getElementById('inputW').value) || 600;
+    TARGET_H = parseInt(document.getElementById('inputH').value) || 800;
+    TARGET_KB = parseInt(document.getElementById('inputKB').value) || 20;
+    TARGET_BYTES = TARGET_KB * 1024;
+}
 
 let images = [];
 let compressedBlobs = [];
@@ -283,6 +336,8 @@ async function compressAll() {
     btnPick.disabled = true;
     statusBar.classList.add('active');
     compressedBlobs = [];
+
+    updateSettings();
 
     for (var i = 0; i < images.length; i++) {
         var img = images[i];
